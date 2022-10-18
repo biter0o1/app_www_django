@@ -16,5 +16,5 @@ class Pastes(models.Model):
     expire_after = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'pastes'

@@ -73,6 +73,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app_www_django.wsgi.application'
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
