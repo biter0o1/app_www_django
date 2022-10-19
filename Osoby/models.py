@@ -22,5 +22,7 @@ class Osoba(models.Model):
     miesiac_urodzenia = models.IntegerField(max_length=2, choices=Miesiace.choices, default=Miesiace.CZERWIEC)
     data_dodania = models.DateField(auto_now=True)
 
+    class Meta:
+        ordering = ["nazwisko"]
     def __str__(self) -> str:
         return f"{self.imie} {self.nazwisko}"
