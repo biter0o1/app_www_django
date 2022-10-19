@@ -21,3 +21,6 @@ class Osoba(models.Model):
     nazwisko = models.CharField(max_length=30, blank=False)
     miesiac_urodzenia = models.IntegerField(max_length=2, choices=Miesiace.choices, default=Miesiace.CZERWIEC)
     data_dodania = models.DateField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.imie} {self.nazwisko}"
