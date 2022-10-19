@@ -19,3 +19,4 @@ class Osoba(models.Model):
     imie = models.CharField(max_length=30, blank=False)
     nazwisko = models.CharField(max_length=30, blank=False)
     miesiac_urodzenia = models.CharField(max_length=30, choices=miesiace, default='5')
+    data_dodania = models.DateField(auto_now=True)
