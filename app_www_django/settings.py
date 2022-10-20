@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Pastes',
+    'Osoby',
+    'Druzyna',
     "debug_toolbar",
 ]
 
