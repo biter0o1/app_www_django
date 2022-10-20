@@ -9,9 +9,7 @@ class Druzyna(models.Model):
 
     class Meta:
         ordering = ["nazwa"]
-
-        verbose_name = 'test'
-        verbose_name_plural = 'twst2'
+        verbose_name_plural = 'Drużyna'
 
     def __str__(self) -> str:
         return f"{self.nazwa} ({self.kraj})"

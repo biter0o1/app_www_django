@@ -5,6 +5,7 @@ from .models import Osoba
 
 class OsobaAdmin(admin.ModelAdmin):
     list_display = ['imie', 'nazwisko', 'miesiac_urodzenia', 'data_dodania', 'druzyna']
+    list_filter = ('druzyna', 'data_dodania')
 
 admin.site.register(Osoba, OsobaAdmin)
 
