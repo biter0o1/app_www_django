@@ -1,6 +1,11 @@
 from django.db import models
 
+
+
 from django.utils.translation import gettext_lazy as _
+
+from Druzyna.models import Druzyna
+
 
 class Osoba(models.Model):
     class Miesiace(models.IntegerChoices):
@@ -19,8 +24,9 @@ class Osoba(models.Model):
 
     imie = models.CharField(max_length=30, blank=False)
     nazwisko = models.CharField(max_length=30, blank=False)
-    miesiac_urodzenia = models.IntegerField(max_length=2, choices=Miesiace.choices, default=Miesiace.CZERWIEC)
+    miesiac_urodzenia = models.IntegerField(choices=Miesiace.choices, default=Miesiace.CZERWIEC)
     data_dodania = models.DateField(auto_now=True)
+    druzyna = models.ForeignKey(Druzyna, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         ordering = ["nazwisko"]
