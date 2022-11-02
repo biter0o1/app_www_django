@@ -1,8 +1,11 @@
 data
 .idea
 db.sqlite3
-venv
+myvenv
 /__pycache__/
 Osoby/__pycache__/
 Osoby/migrations/__pycache__/
 Pastes/migrations/__pycache__/
+app_www_django/__pycache__
+Druzyna/__pycache__/
+Druzyna/migrations
