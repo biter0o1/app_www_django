@@ -3,6 +3,7 @@ data
 db.sqlite3
 myvenv
 /__pycache__/
+**/__pycache__/
 Osoby/__pycache__/
 Osoby/migrations/__pycache__/
 Pastes/migrations/__pycache__/

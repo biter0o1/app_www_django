@@ -1,14 +1,24 @@
 from rest_framework import serializers
 from .models import Osoba, Druzyna, MIESIACE
+from datetime import date
 
 
 class OsobaSerializer(serializers.Serializer):
+    # letters = RegexValidator(r'[a-zA-Z]+', 'Only alphanumeric characters are allowed.')
+
     id = serializers.IntegerField(read_only=True)
     imie = serializers.CharField(required=True)
     nazwisko = serializers.CharField(required=True)
     miesiac_urodzenia = serializers.ChoiceField(choices=MIESIACE, default=MIESIACE)
     data_dodania = serializers.DateField()
     druzyna = serializers.PrimaryKeyRelatedField(queryset=Druzyna.objects.all())
+
+    def validate(self, data):
+        if not data['imie'].isalpha():
+            raise serializers.ValidationError("Imie moze zawierac tylko litery")
+        if data['data_dodania'] > date.today():
+            raise serializers.ValidationError("Data nie może być wyższa niż dzisiejsza")
+        return data
 
     def create(self, validated_data):
         return Osoba.objects.create(**validated_data)
@@ -21,6 +31,7 @@ class OsobaSerializer(serializers.Serializer):
         instance.druzyna = validated_data.get('druzyna', instance.druzyna)
         instance.save()
         return instance
+
 
 
 class DruzynaSerializer(serializers.Serializer):
@@ -36,3 +47,9 @@ class DruzynaSerializer(serializers.Serializer):
         instance.kraj = validated_data.get('kraj', instance.kraj)
         instance.save()
         return instance
+
+
+class OsobaModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ('__all__')
+        model = Osoba

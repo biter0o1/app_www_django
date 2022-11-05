@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'Osoby',
     'Druzyna',
     "debug_toolbar",
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
