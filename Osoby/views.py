@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.decorators import api_view, authentication_classes, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Osoba
 from .serializers import OsobaSerializer
 
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def osoba_list(request):
     """
     Lista wszystkich obiektów modelu Person.
@@ -19,6 +21,21 @@ def osoba_list(request):
         serializer = OsobaSerializer(osoby, many=True)
         return Response(serializer.data)
 
+@api_view(['GET'])
+def osoba_get_one(request, pk):
+    try:
+        osoba = Osoba.objects.get(pk=pk)
+    except Osoba.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OsobaSerializer(osoba)
+        return Response(serializer.data)
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def osoba_create(request):
     if request.method == 'POST':
         serializer = OsobaSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,7 +44,10 @@ def osoba_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'DELETE'])
+
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
+@api_view(['DELETE'])
 def osoba_detail(request, pk):
     """
     :param request: obiekt DRF Request
@@ -39,11 +59,6 @@ def osoba_detail(request, pk):
     except Osoba.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        osoba = Osoba.objects.get(pk=pk)
-        serializer = OsobaSerializer(osoba)
-        return Response(serializer.data)
-
-    elif request.method == 'DELETE':
+    if request.method == 'DELETE':
         osoba.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
