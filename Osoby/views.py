@@ -6,6 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .models import Osoba
 from .serializers import OsobaSerializer
+from rest_framework import permissions
 
 
 @api_view(['GET'])
@@ -21,20 +22,10 @@ def osoba_list(request):
         serializer = OsobaSerializer(osoby, many=True)
         return Response(serializer.data)
 
-@api_view(['GET'])
-def osoba_get_one(request, pk):
-    try:
-        osoba = Osoba.objects.get(pk=pk)
-    except Osoba.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
 
-    if request.method == 'GET':
-        serializer = OsobaSerializer(osoba)
-        return Response(serializer.data)
-
+@api_view(['POST'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['POST'])
 def osoba_create(request):
     if request.method == 'POST':
         serializer = OsobaSerializer(data=request.data)
@@ -45,9 +36,9 @@ def osoba_create(request):
 
 
 
+@api_view(['GET', 'DELETE'])
 @authentication_classes([SessionAuthentication, BasicAuthentication])
 @permission_classes([IsAuthenticated])
-@api_view(['DELETE'])
 def osoba_detail(request, pk):
     """
     :param request: obiekt DRF Request
@@ -58,6 +49,10 @@ def osoba_detail(request, pk):
         osoba = Osoba.objects.get(pk=pk)
     except Osoba.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = OsobaSerializer(osoba)
+        return Response(serializer.data)
 
     if request.method == 'DELETE':
         osoba.delete()

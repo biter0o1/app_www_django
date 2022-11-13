@@ -27,6 +27,7 @@ class Osoba(models.Model):
     miesiac_urodzenia = models.IntegerField(choices=MIESIACE.choices, default=MIESIACE.CZERWIEC)
     data_dodania = models.DateField(auto_now=True)
     druzyna = models.ForeignKey(Druzyna, null=True, on_delete=models.SET_NULL)
+    owner = models.ForeignKey('auth.User', null=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["nazwisko"]
