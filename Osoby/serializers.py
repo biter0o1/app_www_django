@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from .models import Osoba, Druzyna, MIESIACE
 from datetime import date
@@ -54,3 +55,11 @@ class OsobaModelSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('__all__')
         model = Osoba
+
+
+class UserSerializer(serializers.ModelSerializer):
+    owners = serializers.PrimaryKeyRelatedField(many=True, queryset=User.objects.all())
+
+    class Meta:
+        model = User
+        fields = ['__all__']
