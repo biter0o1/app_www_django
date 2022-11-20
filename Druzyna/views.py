@@ -1,9 +1,14 @@
+from django.http import Http404
 from django.shortcuts import render
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from Osoby.models import Osoba
 from .models import Druzyna
-from Osoby.serializers import DruzynaSerializer
+from Osoby.serializers import DruzynaSerializer, OsobaSerializer
 
 
 @api_view(['GET', 'POST'])
@@ -36,3 +41,10 @@ def druzyna_detail(request, pk):
     elif request.method == 'DELETE':
         druzyna.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@permission_classes([IsAuthenticated])
+class druzynaIdOsoba(APIView):
+    def get(self, request, pk, format=None):
+        osoby = Osoba.objects.filter(druzyna_id=pk)
+        serializer = OsobaSerializer(osoby, many=True)
+        return Response(serializer.data)

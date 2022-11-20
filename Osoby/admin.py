@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from rest_framework.authtoken.admin import TokenAdmin
 from .models import Osoba
 # Register your models here.
 
@@ -9,3 +9,4 @@ class OsobaAdmin(admin.ModelAdmin):
 
 admin.site.register(Osoba, OsobaAdmin)
 
+TokenAdmin.raw_id_fields = ['user']
