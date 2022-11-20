@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import api_view, authentication_classes, permission_classes
@@ -10,6 +9,11 @@ from rest_framework.views import APIView
 from .models import Osoba
 from .permissions import IsOwnerOrReadOnly
 from .serializers import OsobaSerializer
+
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 class OsobaGet(APIView):
@@ -58,8 +62,7 @@ class OsobaUpdate(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsOwnerOrReadOnly])
+@permission_classes([IsAuthenticated, IsOwnerOrReadOnly])
 class OsobaDelete(APIView):
     def get_object(self, pk):
         try:
@@ -75,6 +78,12 @@ class OsobaDelete(APIView):
         osoba = self.get_object(pk)
         osoba.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
 
 # @api_view(['GET'])
 # def osoba_list(request):
