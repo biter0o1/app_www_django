@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import permission_required
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from rest_framework import status
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
@@ -18,6 +20,8 @@ from rest_framework.authtoken.models import Token
 
 class OsobaGet(APIView):
     def get(self, request, format=None):
+        if not request.user.has_perm('Osoby.view_osoba'):
+            raise PermissionDenied()
         osoby = Osoba.objects.all()
         serializer = OsobaSerializer(osoby, many=True)
         return Response(serializer.data)
