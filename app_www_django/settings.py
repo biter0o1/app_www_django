@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "wklejki",
     'rest_framework',
-    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [

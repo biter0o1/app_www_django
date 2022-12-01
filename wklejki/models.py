@@ -23,5 +23,13 @@ class Wklejki(models.Model):
     lajki = models.IntegerField(default=0)
 
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['kategoria'], name='kategoria_index'), # Index tylko dla wlasnych testow
+        ]
+        db_table = 'wklejki'
+        verbose_name = 'Wklejki'
+        verbose_name_plural = 'Wklejki'
+
     def __str__(self):
         return (self.tytul)

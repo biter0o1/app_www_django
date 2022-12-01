@@ -18,8 +18,10 @@ from django.urls import path, include
 from wklejki import views
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
     path('wklejki/', views.Wklejki_list.as_view()),
     path('wklejki/create',views.Wklejki_utworz.as_view()),
     path('wklejki/delete/<int:pk>', views.Wklejki_usun.as_view()),
     path('wklejki/update/<int:pk>', views.Wklejki_aktualizacja.as_view()),
+    path('wklejki/lajk/<int:pk>', views.Wklejki_lajki.as_view()),
 ]
