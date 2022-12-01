@@ -39,16 +39,20 @@ class Wklejki_usun(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class Wklejki_aktualizacja(APIView):
-    def get(self, pk):
+    def get_object(self, pk):
         try:
             return Wklejki.objects.get(pk=pk)
         except Wklejki.DoesNotExist:
             raise Http404
+    def get(self, request, pk, format=None):
+        Wklejki = self.get_object(pk)
+        serializer = WklejkiSerializer(Wklejki)
+        return Response(serializer.data)
 
     def put(self, request, pk, format=None):
 
-        Wklejki = self.get_object(pk)
-        serializer = WklejkiSerializer(Wklejki, data=request.data)
+        wklejki = self.get_object(pk)
+        serializer = WklejkiSerializer(wklejki, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
