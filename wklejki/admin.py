@@ -3,12 +3,8 @@ from .models import Wklejki
 
 # Register your models here.
 
-# class PersonAdmin(admin.ModelAdmin):
-#     list_display = ['imie', 'nazwisko', 'druzyna']
-#     list_filter = ('druzyna',)
-#
-#
-# admin.site.register(Osoba, PersonAdmin)
-admin.site.register(Wklejki)
-#
-# TokenAdmin.raw_id_fields=['user']
+class WklejkiAdmin(admin.ModelAdmin):
+    list_display = ['tytul', 'kategoria', 'wlasciciel_wklejki', 'tekst', 'lajki']
+    list_filter = ('kategoria',)
+
+admin.site.register(Wklejki, WklejkiAdmin)
