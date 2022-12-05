@@ -2,23 +2,25 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class Kategorie(models.IntegerChoices):
-    zwykly_tekst = 1, _('Zwykły tekst')
-    html = 2, _("HTML")
-    css = 3, _("CSS")
-    PHP = 4, _('PHP')
-    Python = 5, _("PYTHON")
-    Ruby = 6, _("Ruby")
-    C = 7, _("C")
-    Cpp = 8, _('C++')
-    Go = 9, _('Go')
-    Latex = 10, _('Latex')
+class Kategorie(models.TextChoices):
+    zwykly_tekst = "ZWYKLY TEKST", _('ZWYKLY TEKST')
+    html = "HTML", _("HTML")
+    css = "CSS", _("CSS")
+    PHP = "PHP", _('PHP')
+    Python = "PYTHON", _("PYTHON")
+    Ruby = "RUBY", _("RUBY")
+    C = "C", _("C")
+    Cpp = "C++", _('C++')
+    Go = "GO", _('GO')
+    Latex = "LATEX", _('LATEX')
 
 
 class Wklejki(models.Model):
     tytul = models.CharField(max_length=255, blank=False)
-    kategoria = models.IntegerField(choices=Kategorie.choices)
-    wlasciciel_wklejki = models.ForeignKey('auth.User', null=True, on_delete=models.CASCADE)
+
+    kategoria = models.CharField(choices=Kategorie.choices, max_length=255)
+
+    wlasciciel_wklejki = models.ForeignKey('auth.User', null=True,blank=True, on_delete=models.CASCADE)
     tekst = models.TextField(max_length=2137, blank=True, null=True)
     lajki = models.IntegerField(default=0)
 

@@ -1,12 +1,18 @@
 from django.http import HttpResponse, Http404
 from django_filters import filters
 from django_filters import rest_framework as filters
-from rest_framework import status
+from rest_framework import status, permissions
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.decorators import permission_classes, authentication_classes
+from rest_framework.permissions import IsAuthenticated
 
+from . import permission
 from .models import Wklejki, Kategorie
 from .Serializer import WklejkiSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+from .permission import IsOwnerOrReadOnly
 
 
 class Wklejki_list(APIView):
@@ -21,6 +27,13 @@ class Wklejki_list(APIView):
 
 
 class Wklejki_utworz(APIView):
+    def get(self, request, format=None):
+        if request.query_params.get('kategoria'):
+            wklejka = Wklejki.objects.filter(kategoria__icontains=request.query_params.get('kategoria'))
+        else:
+            wklejka = Wklejki.objects.all()
+        serializer = WklejkiSerializer(wklejka, many=True)
+        return Response(serializer.data)
     def post(self, request, format=None):
         serializer = WklejkiSerializer(data=request.data)
         if serializer.is_valid():
@@ -28,7 +41,8 @@ class Wklejki_utworz(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, IsOwnerOrReadOnly])
 class Wklejki_usun(APIView):
     def get_object(self, pk):
         try:
@@ -45,7 +59,8 @@ class Wklejki_usun(APIView):
         Wklejki.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated, IsOwnerOrReadOnly])
 class Wklejki_aktualizacja(APIView):
     def get_object(self, pk):
         try:
@@ -66,7 +81,8 @@ class Wklejki_aktualizacja(APIView):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
+@authentication_classes([SessionAuthentication, BasicAuthentication])
+@permission_classes([IsAuthenticated])
 class Wklejki_lajki(APIView):
     def get_object(self, pk):
         try:
