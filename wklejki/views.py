@@ -37,7 +37,7 @@ class Wklejki_utworz(APIView):
     def post(self, request, format=None):
         serializer = WklejkiSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(wlasciciel_wklejki=None if request.user.is_anonymous else self.request.user, lajki=0)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

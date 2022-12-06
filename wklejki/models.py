@@ -20,7 +20,7 @@ class Wklejki(models.Model):
 
     kategoria = models.CharField(choices=Kategorie.choices, max_length=255)
 
-    wlasciciel_wklejki = models.ForeignKey('auth.User', null=True,blank=True, on_delete=models.CASCADE)
+    wlasciciel_wklejki = models.ForeignKey('auth.User', null=True, blank=True, on_delete=models.CASCADE)
     tekst = models.TextField(max_length=2137, blank=True, null=True)
     lajki = models.IntegerField(default=0)
 
