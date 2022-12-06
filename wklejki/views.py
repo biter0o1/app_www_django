@@ -5,7 +5,7 @@ from rest_framework import status, permissions
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.decorators import permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
-
+from rest_framework import generics
 from . import permission
 from .models import Wklejki, Kategorie
 from .Serializer import WklejkiSerializer
@@ -20,6 +20,8 @@ class Wklejki_list(APIView):
     def get(self, request, format=None):
         if request.query_params.get('kategoria'):
             wklejka = Wklejki.objects.filter(kategoria__icontains=request.query_params.get('kategoria'))
+        elif request.query_params.get('najwiecej-lajkow'):
+            wklejka = Wklejki.objects.order_by("-lajki")[:int(request.query_params.get('najwiecej-lajkow'))]
         else:
             wklejka = Wklejki.objects.all()
         serializer = WklejkiSerializer(wklejka, many=True)
