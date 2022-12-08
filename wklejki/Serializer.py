@@ -20,8 +20,3 @@ class WklejkiSerializer(serializers.ModelSerializer):
 
 
 
-
-#anonimowy uzytknownik moze zrobic wklejke za "kogos"
-#auto uzupellnianie sie uzytkownika na anonimowy(brak)/istniejeacy,
-# lajki deafultowo na 0 sa ale mozna dac im przy tworzeniu 100 lajkow - do poprawy ?
-#przy aktualizacji nie powinno sie aktualizowac lajkow/uzytkownika (wyswietl mniej rzeczy)

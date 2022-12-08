@@ -102,5 +102,11 @@ class Wklejki_lajki(APIView):
         wklejka.lajki += 1
         wklejka.save(update_fields=['lajki'])
         return Response(status=status.HTTP_200_OK)
+class Wklejki_list_by_user(APIView):
 
+    def get(self, request, pk ,format=None):
+
+        wklejka = Wklejki.objects.filter(wlasciciel_wklejki=pk)
+        serializer = WklejkiSerializer(wklejka, many=True)
+        return Response(serializer.data)
 

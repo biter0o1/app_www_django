@@ -24,4 +24,5 @@ urlpatterns = [
     path('wklejki/delete/<int:pk>', views.Wklejki_usun.as_view()),
     path('wklejki/update/<int:pk>', views.Wklejki_aktualizacja.as_view()),
     path('wklejki/lajk/<int:pk>', views.Wklejki_lajki.as_view()),
+    path('wklejki/search/<int:pk>', views.Wklejki_list_by_user.as_view()),
 ]
